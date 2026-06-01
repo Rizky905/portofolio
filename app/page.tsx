@@ -2,8 +2,10 @@
 
 import { useState, useEffect } from "react";
 import {
-  Mail, Phone, Terminal, Server, Code, Database, Briefcase, MapPin,
-  Calendar, ChevronRight, FolderGit2, X, LayoutTemplate, ScanLine
+  Mail, Terminal, Code, Database, Briefcase, MapPin,
+  Calendar, ChevronRight, FolderGit2, X, LayoutTemplate, ScanLine,
+  ChartSpline,
+  GraduationCap
 } from "lucide-react";
 
 // Custom GitHub Icon Component
@@ -13,58 +15,75 @@ const GithubIcon = ({ className = "w-6 h-6" }: { className?: string }) => (
   </svg>
 );
 
-// Custom LinkedIn Icon Component
-const LinkedinIcon = ({ className = "w-6 h-6" }: { className?: string }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-    <rect x="2" y="9" width="4" height="12"></rect>
-    <circle cx="4" cy="4" r="2"></circle>
-  </svg>
-);
-
 // --- PROJECT DATA ---
 const projectsData = [
   {
     id: 1,
-    title: "Factory Ops & Dashboard System",
-    shortDesc: "A tracking system and monitoring dashboard for factory operations.",
-    fullDesc: "Developed a comprehensive tracking system for factory operations paired with a real-time monitoring dashboard. This system significantly improved data visibility for executives and automated the tracking of daily production metrics. It streamlined workflows that were previously manual, reducing reporting errors by ensuring seamless tracking. The dashboard was optimized to handle thousands of daily data entries without performance degradation.",
-    tech: ["PHP", "JavaScript", "MySQL", "UI/UX Dashboard"],
+    title: "Product Management System",
+    shortDesc: "streamlined manufacturing and logistics workflows by centralizing product information, inventory management, warehouse operations, and product asset management.",
+    fullDesc: "Developed a Product Management System that streamlined manufacturing and logistics workflows by centralizing product information, inventory management, warehouse operations, and product asset management. The solution improved data accessibility, operational efficiency, and process visibility across business functions.",
+    tech: ["PHP", "JavaScript", "MySQL"],
     icon: Database,
     color: "blue",
     images: [
-      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop"
+      "/project/product-management/satu.png",
+      "/project/product-management/dua.png",
+      "/project/product-management/tiga.png"
     ]
   },
   {
     id: 2,
-    title: "Corporate CMS & Asset Manager",
-    shortDesc: "A dual-purpose system for digital content and physical asset tracking.",
-    fullDesc: "Designed and implemented a dual-purpose architecture using the Laravel framework. The CMS module enables non-technical staff to efficiently update digital content securely. Meanwhile, the Asset Management module tracks physical company assets, inventory lifecycles, and maintenance schedules across multiple departments. This unified platform eliminated the need for third-party tracking software, saving the company significant operational costs.",
-    tech: ["Laravel", "PHP", "System Architecture", "MySQL"],
-    icon: LayoutTemplate,
+    title: "Product Monitoring Dashboard",
+    shortDesc: "centralize and visualize product-related data, improving operational visibility and supporting efficient monitoring.",
+    fullDesc: "The Product Monitoring Dashboard is a web-based application developed to provide real-time visibility into product operations across manufacturing and logistics processes. The platform enables users to monitor product status, track key operational metrics, and gain actionable insights through an intuitive and visually driven dashboard interface.",
+    tech: ["PHP", "JavaScript", "MySQL"],
+    icon: ChartSpline,
     color: "emerald",
     images: [
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015&auto=format&fit=crop"
+      "/project/product-monitoring/satu.png",
+      "/project/product-monitoring/dua.png",
+      "/project/product-monitoring/tiga.png"
+
     ]
   },
   {
     id: 3,
     title: "Product Reconcile Application",
-    shortDesc: "A specialized app with direct barcode scanner hardware integration.",
-    fullDesc: "Built a specialized application strictly focused on inventory accuracy and warehouse logistics. It features direct hardware integration with barcode scanner tools via browser APIs, automating the reconciliation of physical products against central database records. This greatly enhanced the speed of warehouse audits, cutting down inventory check times by over 40% and virtually eliminating human data-entry errors.",
-    tech: ["Hardware Integration", "JavaScript", "MySQL", "PHP"],
+    shortDesc: "inventory verification application that ensures physical stock matches system records by utilizing barcode scanner to streamline and improve the accuracy of stock reconciliation processes.",
+    fullDesc: "Reconcile Product System is a web-based application designed to improve inventory accuracy by validating physical stock against data recorded in the system. The solution integrates barcode scanner to simplify the stock reconciliation process, reducing manual effort and minimizing human error. By providing real-time verification and discrepancy tracking, the system helps organizations maintain accurate inventory records, improve operational efficiency, and enhance overall inventory control.",
+    tech: ["Hardware Integration", "PHP", "JavaScript", "MySQL"],
     icon: ScanLine,
     color: "purple",
     images: [
-      "https://images.unsplash.com/photo-1601597111158-2fceff292cdc?q=80&w=2070&auto=format&fit=crop"
+      "/project/reconcile/satu.png",
+      "/project/reconcile/dua.png",
     ]
   }
 ];
 
 export default function Home() {
   const [selectedProject, setSelectedProject] = useState<typeof projectsData[0] | null>(null);
+  const [activeSection, setActiveSection] = useState("");
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id);
+        }
+      });
+    }, {
+      // Triggers when a section hits the middle of the screen
+      rootMargin: "-30% 0px -70% 0px"
+    });
+
+    const sections = document.querySelectorAll("section[id]");
+    sections.forEach((section) => observer.observe(section));
+
+    return () => {
+      sections.forEach((section) => observer.unobserve(section));
+    };
+  }, []);
 
   useEffect(() => {
     if (selectedProject) document.body.style.overflow = 'hidden';
@@ -77,6 +96,7 @@ export default function Home() {
 
       <style dangerouslySetInnerHTML={{
         __html: `
+        html { scroll-behavior: smooth; }
         .custom-scrollbar::-webkit-scrollbar { width: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
@@ -88,15 +108,17 @@ export default function Home() {
         <div className="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
           <span className="font-mono font-bold text-neutral-100">&lt;Rizky /&gt;</span>
           <div className="space-x-6 text-sm font-medium hidden md:block">
-            <a href="#experience" className="hover:text-neutral-100 transition-colors">Experience</a>
-            <a href="#projects" className="hover:text-neutral-100 transition-colors">Projects</a>
-            <a href="#skills" className="hover:text-neutral-100 transition-colors">Skills</a>
+            <a href="#about" onClick={() => setActiveSection("about")} className={`transition-colors duration-300 ${activeSection === "about" ? "text-white font-bold" : "text-neutral-400 hover:text-neutral-100"}`}>About</a>
+            <a href="#experience" onClick={() => setActiveSection("experience")} className={`transition-colors duration-300 ${activeSection === "experience" ? "text-white font-bold" : "text-neutral-400 hover:text-neutral-100"}`}>Experience</a>
+            <a href="#projects" onClick={() => setActiveSection("projects")} className={`transition-colors duration-300 ${activeSection === "projects" ? "text-white font-bold" : "text-neutral-400 hover:text-neutral-100"}`}>Projects</a>
+            <a href="#skills" onClick={() => setActiveSection("skills")} className={`transition-colors duration-300 ${activeSection === "skills" ? "text-white font-bold" : "text-neutral-400 hover:text-neutral-100"}`}>Skills</a>
+            <a href="#contact" onClick={() => setActiveSection("contact")} className={`transition-colors duration-300 ${activeSection === "contact" ? "text-white font-bold" : "text-neutral-400 hover:text-neutral-100"}`}>Contact</a>
           </div>
         </div>
       </nav>
 
       {/* Hero Section (Updated to Split Layout) */}
-      <section className="pt-32 pb-16 px-6 max-w-5xl mx-auto flex flex-col-reverse md:flex-row items-center justify-between gap-12 lg:gap-20">
+      <section id="about" className="pt-32 pb-16 px-6 max-w-7xl mx-auto flex flex-col-reverse md:flex-row items-center justify-between gap-12 lg:gap-20">
 
         {/* Left Column: Text & Buttons */}
         <div className="flex-1 w-full">
@@ -110,7 +132,7 @@ export default function Home() {
             IT Software & Development Engineer
           </h2>
           <p className="max-w-lg text-base leading-relaxed mb-8 text-neutral-400">
-            Web Developer with 4+ years of experience building and enhancing web-based applications in the insurance and manufacturing sectors.
+            Fullstack Developer with 4+ years of experience building and enhancing web-based applications in the insurance and manufacturing sectors.
             Specialized in PHP, Laravel, JavaScript, Next.js, MySQL, and MongoDB, with hands-on experience in system integration, process automation, and performance optimization.
             Recognized for delivering innovative digital solutions that streamline business operations, improve user experience, and create measurable business impact.
           </p>
@@ -142,10 +164,10 @@ export default function Home() {
         </div>
       </section>
 
-      <div className="max-w-5xl mx-auto px-6 border-t border-neutral-800 my-4"></div>
+      <div className="max-w-7xl mx-auto px-6 border-t border-neutral-800 my-4"></div>
 
       {/* Professional Experience */}
-      <section id="experience" className="py-16 px-6 max-w-5xl mx-auto">
+      <section id="experience" className="py-16 px-6 max-w-7xl mx-auto">
         <h3 className="text-xl font-bold text-neutral-100 mb-10 flex items-center">
           <Briefcase className="mr-3 w-5 h-5 text-neutral-500" /> Professional Experience
         </h3>
@@ -196,7 +218,7 @@ export default function Home() {
       </section>
 
       {/* Projects Showcase */}
-      <section id="projects" className="py-16 px-6 max-w-5xl mx-auto">
+      <section id="projects" className="py-16 px-6 max-w-7xl mx-auto">
         <h3 className="text-xl font-bold text-neutral-100 mb-2 flex items-center">
           <FolderGit2 className="mr-3 w-5 h-5 text-neutral-500" /> Featured Projects
         </h3>
@@ -224,7 +246,7 @@ export default function Home() {
       </section>
 
       {/* Skills & Education Grid */}
-      <section id="skills" className="py-16 px-6 max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
+      <section id="skills" className="py-16 px-6 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
         <div>
           <h3 className="text-xl font-bold text-neutral-100 mb-6 flex items-center">
             <Terminal className="mr-3 w-5 h-5 text-neutral-500" /> Areas of Expertise
@@ -235,24 +257,24 @@ export default function Home() {
                 <Code className="w-4 h-4 mr-2 text-neutral-400" />
                 <h4 className="font-medium text-neutral-200">Software Development</h4>
               </div>
-              <p className="text-sm text-neutral-500">PHP, Laravel, JavaScript, HTML/CSS, Web Application Architecture.</p>
+              <p className="text-sm text-neutral-500">PHP, Laravel, Golang, JavaScript, HTML/CSS, NextJs, Docker.</p>
             </div>
             <div className="p-4 bg-neutral-900/50 border border-neutral-800 rounded-lg">
               <div className="flex items-center mb-2">
                 <Database className="w-4 h-4 mr-2 text-neutral-400" />
                 <h4 className="font-medium text-neutral-200">Data & Systems</h4>
               </div>
-              <p className="text-sm text-neutral-500">MySQL, Database Design, Content Management Systems (CMS), Hardware Integration.</p>
+              <p className="text-sm text-neutral-500">MySQL, MongoDB, PostgreSQL</p>
             </div>
           </div>
         </div>
 
         <div>
           <h3 className="text-xl font-bold text-neutral-100 mb-6 flex items-center">
-            <Database className="mr-3 w-5 h-5 text-neutral-500" /> Education
+            <GraduationCap className="mr-3 w-5 h-5 text-neutral-500" /> Education
           </h3>
           <div className="p-5 border border-neutral-800 rounded-lg bg-[#0a0a0a]">
-            <h4 className="text-lg font-bold text-neutral-100 mb-1">Universitas Esa Unggul</h4>
+            <h4 className="text-lg font-bold text-neutral-100 mb-1">Esa Unggul University</h4>
             <p className="text-sm text-neutral-400 mb-4">Bachelor's Degree in Informatics Engineering</p>
             <div className="flex justify-between items-center text-sm font-mono text-neutral-500 border-t border-neutral-800 pt-4">
               <span>Period: 2016 – 2020</span>
@@ -313,8 +335,7 @@ export default function Home() {
             onClick={() => setSelectedProject(null)}
           ></div>
 
-          <div className="relative bg-[#0f0f0f] border border-neutral-700 rounded-2xl w-full max-w-3xl max-h-[90vh] flex flex-col shadow-2xl animate-in fade-in zoom-in-95 duration-200 overflow-hidden">
-
+          <div className="relative bg-[#0f0f0f] border border-neutral-700 rounded-2xl w-full max-w-7xl max-h-[90vh] flex flex-col shadow-2xl animate-in fade-in zoom-in-95 duration-200 overflow-hidden">
             <div className="flex items-center justify-between p-5 md:p-6 border-b border-neutral-800 bg-[#0f0f0f] z-10 shrink-0">
               <div className="flex items-center pr-4">
                 <selectedProject.icon className={`w-6 h-6 mr-3 text-${selectedProject.color}-400 shrink-0`} />
