@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Mail, Terminal, Code, Database, Briefcase, MapPin, Calendar, ChevronRight, FolderGit2, X, LayoutTemplate, ScanLine, ChartSpline, GraduationCap, Trophy, Award } from "lucide-react";
+import { Mail, Terminal, Code, Database, Briefcase, MapPin, Calendar, ChevronRight, FolderGit2, X, LayoutTemplate, ScanLine, ChartSpline, GraduationCap, Trophy, Award, ExternalLink } from "lucide-react";
 import { motion } from "framer-motion";
 
 // Custom GitHub Icon Component
@@ -54,18 +54,37 @@ const awardsData = [
   {
     id: 1,
     title: "MSIG Asia Awards - Innovation Awards (General Category)",
-    issuer: "PT Asuransi MSIG Indonesia",
+    issuer: "MSIG Asia Singapore",
     date: "2025",
     description: `Awarded for successfully delivering the "My Invoice Registration project", significantly improving business processes through digital innovation.`,
-    image: "/awards/msig-award.jpg",
+
+    fullDescription: "Awarded for successfully delivering My Invoice Registration (MIR), \
+    a digital claims processing solution that invoice submission, tracking, and reconciliation through integration with the Merimen system. \
+    The initiative reduced processing time by over 60%, saved more than 120 operational hours per month, \
+    minimized manual errors, and improved transparency and efficiency for both internal teams and business partners.",
+
+    images: ["/awards/mir2.jpg", "/awards/mir1.jpg", "/awards/mir3.jpg"],
+
+    link: "https://www.linkedin.com/posts/msigindonesia_msigindonesia-goldenjourneywithgratitude-activity-7406630784595431427-teHE?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAAC5kymIBet04QERKfORriC9f4O2OemS0qL8"
   },
   {
     id: 2,
     title: "Grand Winner - Best Idea Innovation",
-    issuer: "PT Asuransi MSIG Indonesia",
+    issuer: "Asuransi MSIG Indonesia",
     date: "2024",
-    description: "Recognized for outstanding performance and dedication in developing high-impact web applications and improving team operational efficiency.",
-    image: "/awards/sagara-award.jpg",
+
+    description: "Awarded for successfully delivering Kizuna Link, \
+    a digital transformation initiative that consolidated multiple insurance systems into a single platform",
+
+    fullDescription: "Kizuna Link is a centralized platform designed to integrate core insurance systems, \
+    including EEMA, DORA, E-Clauses, Artemis, and DELTA, into a single, unified solution. \
+    By consolidating these systems into one interface, users will be able to generate, manage, and track quotations seamlessly without the need to switch between multiple applications, \
+    resulting in a more efficient and streamlined workflow. Kizuna Link will also provide a centralized dashboard that offers real-time visibility into quotation activities and statuses. \
+    Users will be able to monitor the entire quotation lifecycle—from creation and review to approval and issuance—through a comprehensive tracking system, improving transparency and operational control.",
+
+    images: ["/awards/kizuna1.jfif"],
+
+    link: "https://www.linkedin.com/posts/msigindonesia_great-ideas-and-innovations-drive-progress-activity-7297132672915513345-R9UJ?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAAC5kymIBet04QERKfORriC9f4O2OemS0qL8"
   },
 ];
 
@@ -73,24 +92,23 @@ const awardsData = [
 const ScrollReveal = ({
   children,
   delay = 0,
-  direction = "up", // <--- Arah default sekarang adalah "up" (bawah ke atas)
+  direction = "up",
 }: {
   children: React.ReactNode;
   delay?: number;
   direction?: "left" | "right" | "up" | "down";
 }) => {
-  // Menentukan posisi awal berdasarkan arah yang dipilih
   const variants = {
     hidden: {
       opacity: 0,
       x:
         direction === "left" ? -50
-        : direction === "right" ? 50
-        : 0,
+          : direction === "right" ? 50
+            : 0,
       y:
         direction === "up" ? 50
-        : direction === "down" ? -50
-        : 0,
+          : direction === "down" ? -50
+            : 0,
     },
     visible: {
       opacity: 1,
@@ -118,6 +136,7 @@ const ScrollReveal = ({
 export default function Home() {
   const [selectedProject, setSelectedProject] = useState<(typeof projectsData)[0] | null>(null);
   const [activeSection, setActiveSection] = useState("");
+  const [selectedAward, setSelectedAward] = useState<typeof awardsData[0] | null>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -129,7 +148,6 @@ export default function Home() {
         });
       },
       {
-        // Triggers when a section hits the middle of the screen
         rootMargin: "-30% 0px -70% 0px",
       },
     );
@@ -149,6 +167,12 @@ export default function Home() {
       document.body.style.overflow = "unset";
     };
   }, [selectedProject]);
+
+  useEffect(() => {
+    if (selectedProject || selectedAward) document.body.style.overflow = 'hidden';
+    else document.body.style.overflow = 'unset';
+    return () => { document.body.style.overflow = 'unset'; }
+  }, [selectedProject, selectedAward]);
 
   return (
     <main className="min-h-screen bg-[#0a0a0a] text-neutral-400 font-sans selection:bg-blue-500/30 selection:text-blue-200">
@@ -416,7 +440,6 @@ export default function Home() {
         </ScrollReveal>
       </section>
 
-      {/* award */}
       {/* Awards & Recognitions */}
       <section id="awards" className="py-16 px-6 max-w-7xl mx-auto overflow-hidden">
         <ScrollReveal>
@@ -427,13 +450,16 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {awardsData.map((award) => (
-              <div key={award.id} className="bg-neutral-900/40 border border-neutral-800 rounded-xl overflow-hidden hover:border-neutral-500 transition-colors group flex flex-col h-full">
+              <div
+                key={award.id}
+                onClick={() => setSelectedAward(award)}
+                className="cursor-pointer bg-neutral-900/40 border border-neutral-800 rounded-xl overflow-hidden hover:border-neutral-500 transition-all hover:bg-neutral-900 group flex flex-col h-full"
+              >
                 {/* Upper: Photo Container */}
                 <div className="w-full h-48 md:h-56 overflow-hidden bg-neutral-800 shrink-0">
                   <img
-                    src={award.image}
+                    src={award.images[0]}
                     alt={award.title}
-                    // Jika foto rusak/belum ada, kita beri fallback warna abu-abu
                     onError={(e) => {
                       e.currentTarget.src = "https://images.unsplash.com/photo-1561489422-45de3d015e3e?q=80&w=2070&auto=format&fit=crop";
                     }}
@@ -443,12 +469,17 @@ export default function Home() {
 
                 {/* Lower: Short Description */}
                 <div className="p-5 flex flex-col flex-grow">
-                  <h4 className="text-lg font-bold text-neutral-100 mb-2 group-hover:text-yellow-500 transition-colors">{award.title}</h4>
+                  <h4 className="text-lg font-bold text-neutral-100 mb-2 group-hover:text-blue-500 transition-colors">{award.title}</h4>
                   <div className="flex justify-between items-center text-xs font-mono text-neutral-500 mb-4">
                     <span className="truncate mr-2">{award.issuer}</span>
                     <span className="text-blue-400 shrink-0">{award.date}</span>
                   </div>
-                  <p className="text-sm text-neutral-400 leading-relaxed flex-grow">{award.description}</p>
+                  <p className="text-sm text-neutral-400 leading-relaxed flex-grow line-clamp-3">{award.description}</p>
+
+                  {/* View Details Prompt */}
+                  <div className="mt-4 flex items-center text-xs font-mono text-neutral-400 group-hover:text-neutral-300">
+                    View Details <ChevronRight className="w-3 h-3 ml-1" />
+                  </div>
                 </div>
               </div>
             ))}
@@ -494,7 +525,7 @@ export default function Home() {
           </div>
 
           <div className="pt-8 border-t border-neutral-900 text-center font-mono text-xs text-neutral-600">
-            <p>&copy; {new Date().getFullYear()} Rizky Erlangga. Built with Next.js & Tailwind CSS.</p>
+            <p>&copy; {new Date().getFullYear()} Rizky Erlangga</p>
           </div>
         </div>
       </footer>
@@ -539,6 +570,82 @@ export default function Home() {
                   ))}
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* SCROLLABLE AWARD MODAL */}
+      {selectedAward && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
+          <div
+            className="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity"
+            onClick={() => setSelectedAward(null)}
+          ></div>
+
+          <div className="relative bg-[#0f0f0f] border border-neutral-700 rounded-2xl w-full max-w-4xl max-h-[90vh] flex flex-col shadow-2xl animate-in fade-in zoom-in-95 duration-200 overflow-hidden">
+
+            {/* Modal Header */}
+            <div className="flex items-center justify-between p-5 md:p-6 border-b border-neutral-800 bg-[#0f0f0f] z-10 shrink-0">
+              <div className="flex items-center pr-4">
+                <Award className="w-6 h-6 mr-3 text-blue-400 shrink-0" />
+                <h2 className="text-xl md:text-2xl font-bold text-neutral-100 truncate">
+                  {selectedAward.title}
+                </h2>
+              </div>
+              <button
+                onClick={() => setSelectedAward(null)}
+                className="p-2 text-neutral-400 hover:text-white hover:bg-neutral-800 rounded-full transition-colors shrink-0"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-5 md:p-8 overflow-y-auto custom-scrollbar">
+
+              {/* Full Image/Certificate */}
+              {selectedAward.images.map((imgSrc, index) => (
+                <div key={index} className="mb-8 rounded-xl overflow-hidden border border-neutral-800 bg-neutral-900 flex justify-center items-center">
+                  <img src={imgSrc} alt={`${selectedAward.title} screenshot ${index + 1}`}
+                    className="w-full h-auto object-cover group-hover:scale-[1.02] transition-transform duration-700" />
+                </div>
+              ))}
+
+              {/* Award Details */}
+              <div>
+                <div className="flex justify-between items-center border-b border-neutral-800 pb-4 mb-4">
+                  <div>
+                    <h3 className="text-xs font-mono text-neutral-500 uppercase tracking-wider mb-1">Issued By</h3>
+                    <p className="text-blue-400 font-bold">{selectedAward.issuer}</p>
+                  </div>
+                  <div className="text-right">
+                    <h3 className="text-xs font-mono text-neutral-500 uppercase tracking-wider mb-1">Year</h3>
+                    <p className="text-neutral-300 font-mono">{selectedAward.date}</p>
+                  </div>
+                </div>
+
+                {selectedAward.link && (
+                  <div className="mb-6">
+                    <h3 className="text-xs font-mono text-neutral-500 uppercase tracking-wider mb-2">Reference</h3>
+                    <a
+                      href={selectedAward.link}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center px-3 py-1.5 bg-neutral-900 border border-neutral-700 rounded-md text-xs font-mono text-neutral-400 hover:text-blue-400 hover:border-blue-500 transition-colors group"
+                    >
+                      <ExternalLink className="w-3.5 h-3.5 mr-2 group-hover:scale-110 transition-transform" />
+                      View Official Post
+                    </a>
+                  </div>
+                )}
+
+                <h3 className="text-xs font-mono text-neutral-500 uppercase tracking-wider mb-3">Description</h3>
+                <p className="text-neutral-300 leading-relaxed text-sm md:text-base">
+                  {selectedAward.fullDescription}
+                </p>
+              </div>
+
             </div>
           </div>
         </div>
