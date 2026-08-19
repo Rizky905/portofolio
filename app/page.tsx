@@ -51,9 +51,10 @@ const projectsData = [
     icon: FolderGit2Icon,
     color: "oklch(75% 0.183 55.934)",
     images: [
-      "/project/product-management/satu.png",
-      "/project/product-management/dua.png",
-      "/project/product-management/tiga.png",
+      "/project/cbs/satu.png",
+      "/project/cbs/dua.png",
+      "/project/cbs/tiga.png",
+      "/project/cbs/empat.png",
     ],
   },
   {
