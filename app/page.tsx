@@ -51,10 +51,10 @@ const projectsData = [
     icon: FolderGit2Icon,
     color: "oklch(75% 0.183 55.934)",
     images: [
-      "/project/cbs/satu.png",
-      "/project/cbs/dua.png",
-      "/project/cbs/tiga.png",
-      "/project/cbs/empat.png",
+      "/project/cbs/satu.jpg",
+      "/project/cbs/dua.jpg",
+      "/project/cbs/tiga.jpg",
+      "/project/cbs/empat.jpg",
     ],
   },
   {
@@ -118,7 +118,7 @@ const awardsData = [
     The initiative reduced processing time by over 60%, saved more than 120 operational hours per month, \
     minimized manual errors, and improved transparency and efficiency for both internal teams and business partners.",
 
-    images: ["/awards/mir2.jpg", "/awards/mir1.jpg", "/awards/mir3.jpg"],
+    images: ["/awards/mir2.jpg", "/awards/mir1.jpg", "/awards/mir5.jpeg"],
 
     link: "https://www.linkedin.com/posts/msigindonesia_msigindonesia-goldenjourneywithgratitude-activity-7406630784595431427-teHE?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAAC5kymIBet04QERKfORriC9f4O2OemS0qL8",
   },
